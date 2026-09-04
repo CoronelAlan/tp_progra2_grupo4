@@ -1,0 +1,87 @@
+@startuml
+
+abstract class Pedido{
+#pedido:Producto[]
+
++hacerPedido(menu:Menu)
+
+}
+
+class PedidoSalon{
+
+}
+
+class PedidoRetirar{
+
+}
+
+class PedidoEnvioPropio{
+
+}
+class Menu{
+#producto:Producto
+}
+
+class Producto{
+-nombre:string
+-precio:number
+}
+
+Pedido <|--- PedidoSalon
+Pedido <|--- PedidoRetirar
+Pedido <|--- PedidoEnvioPropio
+
+
+
+
+abstract class Cocina{
+
+}
+
+class Parrilla{
+
+}
+
+class CocinaFria{
+
+}
+
+class BarraBebidas{
+
+}
+
+class CocinaDulce{
+
+}
+
+Cocina <|--- Parrilla
+Cocina <|--- CocinaFria
+Cocina <|--- BarraBebidas
+Cocina <|--- CocinaDulce
+
+
+abstract class MediosDePago{
+
+}
+
+class Efectivo{
+
+}
+
+class Tarjeta{
+
+}
+
+class BilleteraVirtual{ 
+
+}
+
+MediosDePago <|--- Efectivo
+MediosDePago <|--- Tarjeta
+MediosDePago <|--- BilleteraVirtual
+
+
+
+
+
+@enduml
