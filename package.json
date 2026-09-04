@@ -1,0 +1,33 @@
+{
+  "name": "cuvl_programacion2",
+  "version": "1.0.0",
+  "description": "cuvl_programacion2",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "npm run lint && tsc",
+    "clean": "npm run clean:build && npm run clean:temp",
+    "clean:build": "npx rimraf ./dist",
+    "clean:temp": "npx rimraf ./tmp",
+    "dev-mode": "ts-node ./src/index.ts",
+    "lint": "npx eslint ./src",
+    "start": "node ./dist/index.js",
+    "start:dev": "npm run build && npm run start",
+    "test": "npm run build && npx jest tests --runInBand --detectOpenHandles",
+    "prebuild": "npm run clean",
+    "lint-fix": "npx eslint ./src --fix"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/jest": "^30.0.0",
+    "eslint": "^10.9.0",
+    "jest": "^30.4.2",
+    "jest-compact-reporter": "^1.2.9",
+    "jest-junit": "^17.0.0",
+    "ts-jest": "^29.4.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.67.0"
+  }
+}
