@@ -1,9 +1,26 @@
 @startuml
 
-abstract class Pedido{
-#pedido:Producto[]
+class Cliente{
+    -nombre:string
+    -apellido:string
+    -platosElegidos:Plato[]
 
-+hacerPedido(menu:Menu)
+    +agregarPedido(menu: Menu): void
+    +terminarPedido():Pedido
+    +pagar(pedido: Pedido, medioDePago: MedioDePago)
+    
+}
+
+class Pedido{
+    #pedido:Plato[]
+    -tipoPedido:ITipoPedido
+    -estadoPedido:IEstadoPedido
+
+}
+
+'Esto es un "Strategy"?.
+
+interface ITipoPedido{
 
 }
 
@@ -19,23 +36,22 @@ class PedidoEnvioPropio{
 
 }
 class Menu{
-#producto:Producto
+    #platos:Plato[]
 }
 
-class Producto{
--nombre:string
--precio:number
+class Plato{
+    -nombre:string
+    -precio:number
 }
 
-Pedido <|--- PedidoSalon
-Pedido <|--- PedidoRetirar
-Pedido <|--- PedidoEnvioPropio
+'Consultar clase Menu *--- Combo
 
+class Combo{
+    -platosIncluidos:Plato[]
+}
 
-
-
-abstract class Cocina{
-
+abstract class EstacionCocina{
+    #prepararPlato(plato: Plato): void
 }
 
 class Parrilla{
@@ -54,14 +70,8 @@ class CocinaDulce{
 
 }
 
-Cocina <|--- Parrilla
-Cocina <|--- CocinaFria
-Cocina <|--- BarraBebidas
-Cocina <|--- CocinaDulce
-
-
-abstract class MediosDePago{
-
+abstract class MedioDePago{
+    #descuento()
 }
 
 class Efectivo{
@@ -76,12 +86,56 @@ class BilleteraVirtual{
 
 }
 
-MediosDePago <|--- Efectivo
-MediosDePago <|--- Tarjeta
-MediosDePago <|--- BilleteraVirtual
+'IEstadoPedido es un "State"?.
 
+interface IEstadoPedido{
 
+}
 
+class Pendiente{
+
+}
+
+class Produccion{
+
+}
+
+class Finalizado{
+
+}
+
+class historialPedido{
+    'Como guardar en el array el ITipoPedido.
+    -historialDePedidos:Pedido[]
+}
+
+historialPedido *--left-- Pedido
+
+IEstadoPedido <|... Pendiente
+IEstadoPedido <|... Produccion
+IEstadoPedido <|... Finalizado
+Pedido *--left-- IEstadoPedido
+
+ITipoPedido <|... PedidoSalon
+ITipoPedido <|... PedidoRetirar
+ITipoPedido <|... PedidoEnvioPropio
+Pedido *--- ITipoPedido
+
+MedioDePago <|--- Efectivo
+MedioDePago <|--- Tarjeta
+MedioDePago <|--- BilleteraVirtual
+
+Pedido --up-- Menu
+Menu *--left-- Plato
+
+EstacionCocina <|--- Parrilla
+EstacionCocina <|--- CocinaFria
+EstacionCocina <|--- BarraBebidas
+EstacionCocina <|--- CocinaDulce
+Plato *--left-- EstacionCocina
+
+Menu *--up-- Combo
+Combo *---- Plato
 
 
 @enduml
