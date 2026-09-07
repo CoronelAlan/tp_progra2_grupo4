@@ -1,0 +1,141 @@
+@startuml
+
+class Cliente{
+    -nombre:string
+    -apellido:string
+    -platosElegidos:Plato[]
+
+    +agregarPedido(menu: Menu): void
+    +terminarPedido():Pedido
+    +pagar(pedido: Pedido, medioDePago: MedioDePago)
+    
+}
+
+class Pedido{
+    #pedido:Plato[]
+    -tipoPedido:ITipoPedido
+    -estadoPedido:IEstadoPedido
+
+}
+
+'Esto es un "Strategy"?.
+
+interface ITipoPedido{
+
+}
+
+class PedidoSalon{
+
+}
+
+class PedidoRetirar{
+
+}
+
+class PedidoEnvioPropio{
+
+}
+class Menu{
+    #platos:Plato[]
+}
+
+class Plato{
+    -nombre:string
+    -precio:number
+}
+
+'Consultar clase Menu *--- Combo
+
+class Combo{
+    -platosIncluidos:Plato[]
+}
+
+abstract class EstacionCocina{
+    #prepararPlato(plato: Plato): void
+}
+
+class Parrilla{
+
+}
+
+class CocinaFria{
+
+}
+
+class BarraBebidas{
+
+}
+
+class CocinaDulce{
+
+}
+
+abstract class MedioDePago{
+    #descuento()
+}
+
+class Efectivo{
+
+}
+
+class Tarjeta{
+
+}
+
+class BilleteraVirtual{ 
+
+}
+
+'IEstadoPedido es un "State"?.
+
+interface IEstadoPedido{
+
+}
+
+class Pendiente{
+
+}
+
+class Produccion{
+
+}
+
+class Finalizado{
+
+}
+
+class historialPedido{
+    'Como guardar en el array el ITipoPedido.
+    -historialDePedidos:Pedido[]
+}
+
+historialPedido *--left-- Pedido
+
+IEstadoPedido <|... Pendiente
+IEstadoPedido <|... Produccion
+IEstadoPedido <|... Finalizado
+Pedido *--left-- IEstadoPedido
+
+ITipoPedido <|... PedidoSalon
+ITipoPedido <|... PedidoRetirar
+ITipoPedido <|... PedidoEnvioPropio
+Pedido *--- ITipoPedido
+
+MedioDePago <|--- Efectivo
+MedioDePago <|--- Tarjeta
+MedioDePago <|--- BilleteraVirtual
+
+Pedido --up-- Menu
+Menu *--left-- Plato
+
+EstacionCocina <|--- Parrilla
+EstacionCocina <|--- CocinaFria
+EstacionCocina <|--- BarraBebidas
+EstacionCocina <|--- CocinaDulce
+Plato *--left-- EstacionCocina
+
+Menu *--up-- Combo
+Combo *---- Plato
+
+
+@enduml
