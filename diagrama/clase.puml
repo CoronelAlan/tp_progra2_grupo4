@@ -1,141 +1,240 @@
 @startuml
 
-class Cliente{
-    -nombre:string
-    -apellido:string
-    -platosElegidos:Plato[]
+class Cliente {
+    - nombre: string
+    - apellido: string
 
-    +agregarPedido(menu: Menu): void
-    +terminarPedido():Pedido
-    +pagar(pedido: Pedido, medioDePago: MedioDePago)
-    
+    + agregarPedido(menu: Menu): void
+    + terminarPedido(): Pedido
+    + pagar(pedido: Pedido, medioDePago: MedioDePago): number
 }
 
-class Pedido{
-    #pedido:Plato[]
-    -tipoPedido:ITipoPedido
-    -estadoPedido:IEstadoPedido
+Cliente --> Pedido
 
+class Menu {
+    - platos: IPlatoMenu[]
+
+    + agregarPlato(plato: IPlatoMenu): void
+    + buscarPlato(nombre: string): IPlatoMenu
+    + getPlatos(): IPlatoMenu[]
 }
 
-'Esto es un "Strategy"?.
-
-interface ITipoPedido{
-
+interface IPlatoMenu {
+    + calcularPrecio(): number
+    + obtenerPlatos(): Plato[]
 }
 
-class PedidoSalon{
+Menu o-- IPlatoMenu
 
+class Plato {
+    - nombre: string
+    - precio: number
+
+    + getNombre(): string
 }
 
-class PedidoRetirar{
+IPlatoMenu <|.. Plato
 
+class Combo {
+    - nombre: string
+    - platosIncluidos: Plato[]
+    - beneficio: IEstrategiaBeneficio
 }
 
-class PedidoEnvioPropio{
+IPlatoMenu <|.. Combo
 
-}
-class Menu{
-    #platos:Plato[]
-}
+Combo  o-- Plato
 
-class Plato{
-    -nombre:string
-    -precio:number
+interface IEstrategiaBeneficio {
+    + calcular(precioBase: number): number
 }
 
-'Consultar clase Menu *--- Combo
-
-class Combo{
-    -platosIncluidos:Plato[]
+class DescuentoPorcentual {
+    - porcentaje: number
 }
 
-abstract class EstacionCocina{
-    #prepararPlato(plato: Plato): void
-}
-
-class Parrilla{
-
-}
-
-class CocinaFria{
+class PrecioFijoCombo {
+    - precioFijo: number
 
 }
 
-class BarraBebidas{
+IEstrategiaBeneficio <|.. DescuentoPorcentual
+IEstrategiaBeneficio <|.. PrecioFijoCombo
 
+Combo --> IEstrategiaBeneficio
+
+class Pedido {
+    - platosCocina: PlatoPedido[]
+    - tipoPedido: ITipoPedido
+    - confirmado: boolean
+
+    + agregarPlato(plato: IPlatoMenu): void
+    + quitarPlato(plato: IPlatoMenu): void
+    + confirmar(): void
+    + estaListoParaFacturar(): boolean
+    + getTipoPedido(): ITipoPedido
 }
 
-class CocinaDulce{
+Pedido o-- IPlatoMenu
+Pedido *-- PlatoPedido
+Pedido --> ITipoPedido
 
+interface ITipoPedido {
+    + getDescripcion(): string
+    + calcularAdicional(): number
 }
 
-abstract class MedioDePago{
-    #descuento()
+class PedidoSalon {
 }
 
-class Efectivo{
+class PedidoRetirar {
+    - horarioRetiro: Date
 
+    + getHorarioRetiro(): Date
 }
 
-class Tarjeta{
+class PedidoEnvioPropio {
+    - direccion: string
+    - costoEnvio: number
 
+    + getDireccion(): string
 }
 
-class BilleteraVirtual{ 
+ITipoPedido <|.. PedidoSalon
+ITipoPedido <|.. PedidoRetirar
+ITipoPedido <|.. PedidoEnvioPropio
 
+class PlatoPedido {
+    - plato: Plato
+    - estado: IEstadoPlato
+
+    + getPlato(): Plato
+    + iniciarPreparacion(): void
+    + marcarListo(): void
+    + puedeModificarse(): boolean
+    + cambiarEstado(estado: IEstadoPlato): void
 }
 
-'IEstadoPedido es un "State"?.
+PlatoPedido --> Plato
 
-interface IEstadoPedido{
-
+interface IEstadoPlato {
+    + iniciarPreparacion(plato: PlatoPedido): void
+    + marcarListo(plato: PlatoPedido): void
+    + puedeModificarse(): boolean
+    + estaListo(): boolean
 }
 
-class Pendiente{
-
+class Pendiente {
+    + iniciarPreparacion(plato: PlatoPedido): void
+    + marcarListo(plato: PlatoPedido): void
+    + puedeModificarse(): boolean
+    + estaListo(): boolean
 }
 
-class Produccion{
-
+class EnPreparacion {
+    + iniciarPreparacion(plato: PlatoPedido): void
+    + marcarListo(plato: PlatoPedido): void
+    + puedeModificarse(): boolean
+    + estaListo(): boolean
 }
 
-class Finalizado{
-
+class Listo {
+    + iniciarPreparacion(plato: PlatoPedido): void
+    + marcarListo(plato: PlatoPedido): void
+    + puedeModificarse(): boolean
+    + estaListo(): boolean
 }
 
-class historialPedido{
-    'Como guardar en el array el ITipoPedido.
-    -historialDePedidos:Pedido[]
+IEstadoPlato <|.. Pendiente
+IEstadoPlato <|.. EnPreparacion
+IEstadoPlato <|.. Listo
+
+PlatoPedido --> IEstadoPlato
+
+abstract class EstacionCocina {
+    # cola: PlatoPedido[]
+
+    + recibirPlato(plato: PlatoPedido): void
+    + prepararPlato(): void
 }
 
-historialPedido *--left-- Pedido
+class Parrilla {
+}
 
-IEstadoPedido <|... Pendiente
-IEstadoPedido <|... Produccion
-IEstadoPedido <|... Finalizado
-Pedido *--left-- IEstadoPedido
+class CocinaFria {
+}
 
-ITipoPedido <|... PedidoSalon
-ITipoPedido <|... PedidoRetirar
-ITipoPedido <|... PedidoEnvioPropio
-Pedido *--- ITipoPedido
+class BarraBebidas {
+}
 
-MedioDePago <|--- Efectivo
-MedioDePago <|--- Tarjeta
-MedioDePago <|--- BilleteraVirtual
+class CocinaDulce {
+}
 
-Pedido --up-- Menu
-Menu *--left-- Plato
+EstacionCocina <|-- Parrilla
+EstacionCocina <|-- CocinaFria
+EstacionCocina <|-- BarraBebidas
+EstacionCocina <|-- CocinaDulce
 
-EstacionCocina <|--- Parrilla
-EstacionCocina <|--- CocinaFria
-EstacionCocina <|--- BarraBebidas
-EstacionCocina <|--- CocinaDulce
-Plato *--left-- EstacionCocina
+class RegistroEstaciones {
+    - estaciones: Map<string, EstacionCocina>
 
-Menu *--up-- Combo
-Combo *---- Plato
+    + registrar(tipo: string, estacion: EstacionCocina): void
+    + obtener(tipo: string): EstacionCocina
+}
 
+RegistroEstaciones o-- EstacionCocina
+
+abstract class MedioDePago {
+    + pagar(total: number): number
+}
+
+class Efectivo {
+}
+
+class Tarjeta {
+}
+
+class BilleteraVirtual {
+}
+
+MedioDePago <|-- Efectivo
+MedioDePago <|-- Tarjeta
+MedioDePago <|-- BilleteraVirtual
+
+interface IEstrategiaDescuento {
+    + calcularDescuento(total: number): number
+}
+
+class DescuentoEfectivo {
+    - porcentaje: number
+}
+
+class DescuentoDiaEspecial {
+    - porcentaje: number
+    - dia: number
+}
+
+IEstrategiaDescuento <|.. DescuentoEfectivo
+IEstrategiaDescuento <|.. DescuentoDiaEspecial
+
+
+class CalculadoraCobro {
+    - descuentos: IEstrategiaDescuento[]
+
+    + calcularTotal(pedido: Pedido, medio: MedioDePago): number
+}
+
+CalculadoraCobro --> Pedido
+CalculadoraCobro --> MedioDePago
+CalculadoraCobro o-- IEstrategiaDescuento
+
+class HistorialPedidos {
+    - pedidosFinalizados: Pedido[]
+
+    + registrar(pedido: Pedido): void
+    + getPedidosFinalizados(): Pedido[]
+}
+
+HistorialPedidos o-- Pedido
 
 @enduml
