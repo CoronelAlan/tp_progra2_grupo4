@@ -11,7 +11,7 @@ module.exports = tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
-      '@stylistic': stylistic,
+     // '@stylistic': stylistic,
     },
     languageOptions: {
       parserOptions: {

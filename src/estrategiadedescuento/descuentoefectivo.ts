@@ -1,5 +1,6 @@
 import { IEstrategiaDeDescuento } from "./iestrategiadescuento";
-const PORCENTAJE = 100;//puse 100 pq cuando lo dividis por 100 queda 1, para que no se cancele la formula
+const PORCENTAJE = 100;
+const NUMBER = 100;
 export class DescuentoEfectivo implements IEstrategiaDeDescuento{
 
 
@@ -10,6 +11,6 @@ export class DescuentoEfectivo implements IEstrategiaDeDescuento{
     }
 
     public calcularDescuento(total: number): number {
-        return total * (this.porcentaje/100);
+        return total * (this.porcentaje/NUMBER);
     }
 }
