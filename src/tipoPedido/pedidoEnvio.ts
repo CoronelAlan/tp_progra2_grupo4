@@ -8,6 +8,12 @@ export class PedidoEnvio implements ItipoPedido {
         this.costoEnvio = costoEnvio;
         this.direccion = direccion;
     }
+    getDescripcion(): string {
+        throw new Error("Method not implemented.");
+    }
+    getCostoEnvio(): number {
+        throw new Error("Method not implemented.");
+    }
 
     public calcularEnvio(costoEnvio : number) : void{}
 
