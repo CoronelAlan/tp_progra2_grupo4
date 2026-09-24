@@ -81,19 +81,17 @@ Pedido --> ITipoPedido
 
 interface ITipoPedido {
     + getDescripcion(): string
-    + calcularAdicional(): number
+    + getCostoAdicional(): number
 }
 
 class PedidoSalon {
 }
 
 class PedidoRetirar {
-    - horarioRetiro: Date
-
-    + getHorarioRetiro(): Date
+    
 }
 
-class PedidoEnvioPropio {
+class PedidoEnvio {
     - direccion: string
     - costoEnvio: number
 
@@ -102,7 +100,7 @@ class PedidoEnvioPropio {
 
 ITipoPedido <|.. PedidoSalon
 ITipoPedido <|.. PedidoRetirar
-ITipoPedido <|.. PedidoEnvioPropio
+ITipoPedido <|.. PedidoEnvio
 
 class PlatoPedido {
     - plato: Plato
