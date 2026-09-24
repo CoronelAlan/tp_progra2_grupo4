@@ -125,24 +125,12 @@ interface IEstadoPlato {
 }
 
 class Pendiente {
-    + iniciarPreparacion(plato: PlatoPedido): void
-    + marcarListo(plato: PlatoPedido): void
-    + puedeModificarse(): boolean
-    + estaListo(): boolean
 }
 
 class EnPreparacion {
-    + iniciarPreparacion(plato: PlatoPedido): void
-    + marcarListo(plato: PlatoPedido): void
-    + puedeModificarse(): boolean
-    + estaListo(): boolean
 }
 
 class Listo {
-    + iniciarPreparacion(plato: PlatoPedido): void
-    + marcarListo(plato: PlatoPedido): void
-    + puedeModificarse(): boolean
-    + estaListo(): boolean
 }
 
 IEstadoPlato <|.. Pendiente
