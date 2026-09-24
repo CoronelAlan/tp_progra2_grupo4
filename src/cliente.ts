@@ -9,7 +9,7 @@ export class Cliente {
 
  public agregarPedido(menu: Menu): void{};
 
- public terminarPedido(): pedido{};
+ public terminarPedido(): Pedido{};
 
  public pagar(pedido: Pedido, medioDePago: MedioDePago): number{};
 }
