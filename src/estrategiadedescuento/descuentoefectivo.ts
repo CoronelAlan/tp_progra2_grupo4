@@ -1,11 +1,11 @@
 import { IEstrategiaDeDescuento } from "./iestrategiadescuento";
 const PORCENTAJE = 100;//puse 100 pq cuando lo dividis por 100 queda 1, para que no se cancele la formula
-export class DescuentoEfectivo implements IEstrategiaDeDescuento{
+export class DescuentoEfectivo implements IEstrategiaDeDescuento {
 
 
     private porcentaje: number;
 
-    constructor(porcentaje?:number){
+    public constructor(porcentaje?:number) {
         this.porcentaje = porcentaje ?? PORCENTAJE;
     }
 

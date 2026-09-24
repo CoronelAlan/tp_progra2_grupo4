@@ -1,5 +1,5 @@
 import { DiaDeLaSemana } from "../diasemana"
-export interface IEstrategiaDeDescuento{
+export interface IEstrategiaDeDescuento {
 
-    calcularDescuento(total: number, diaDeSemana:DiaDeLaSemana ):number
+    calcularDescuento(total: number, diaDeSemana:DiaDeLaSemana):number
 }
