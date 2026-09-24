@@ -6,7 +6,7 @@ export class DescuentoEfectivo implements IEstrategiaDeDescuento{
 
     private porcentaje: number;
 
-    constructor(porcentaje?:number){
+    public constructor(porcentaje?:number) {
         this.porcentaje = porcentaje ?? PORCENTAJE;
     }
 

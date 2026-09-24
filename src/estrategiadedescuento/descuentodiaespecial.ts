@@ -5,7 +5,7 @@ export class DescuentoDiaEspecial implements IEstrategiaDeDescuento{
     private porcentaje:number;
     private dia: DiaDeLaSemana;
 
-    constructor(porcentaje: number, dia: DiaDeLaSemana){
+    public constructor(porcentaje: number, dia: DiaDeLaSemana) {
         this.porcentaje = porcentaje;
         this.dia = dia;
     }
@@ -15,7 +15,7 @@ export class DescuentoDiaEspecial implements IEstrategiaDeDescuento{
         if (this.dia === diaDeDescuento){
             resultado = total * (this.porcentaje/NUMBER);
         }
-        else{
+        else {
             resultado = total
         }
 
