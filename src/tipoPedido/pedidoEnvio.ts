@@ -7,6 +7,7 @@ export class PedidoEnvio implements ItipoPedido {
         this.costoEnvio = costoEnvio;
         this.direccion = direccion;
     }
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
     public calcularCostoAdicional(): number {
         
         throw new Error("Method not implemented.");
@@ -15,8 +16,9 @@ export class PedidoEnvio implements ItipoPedido {
         return `Pedido para envio, direccion: ${this.direccion}`;
     }
 
-    public calcularEnvio(costoEnvio : number) : number{
-        return costoEnvio;
+    public calcularEnvio(costoEnvio : number) : number {
+        const costoTotal = this.costoEnvio + costoEnvio;
+        return costoTotal;
     }
 
     public getDireccion() : string {

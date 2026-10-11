@@ -11,6 +11,7 @@ module.exports = tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
+      // @ts-ignore
       '@stylistic': stylistic,
     },
     languageOptions: {

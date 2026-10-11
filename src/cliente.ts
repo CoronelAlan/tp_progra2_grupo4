@@ -11,7 +11,7 @@ export class Cliente {
     this.nombre = nombre;
  }
 
- public agregarPedido(pedido: Pedido): void{
+ public agregarPedido(pedido: Pedido): void {
    this.pedidoActual = pedido;
  };
 
