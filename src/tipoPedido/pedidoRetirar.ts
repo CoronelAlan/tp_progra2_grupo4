@@ -1,11 +1,26 @@
 import {ItipoPedido} from "./ItipoPedido";
+const costoAdicionalSalon = 0;
 
 export class PedidoRetirar implements ItipoPedido {
-    getDescripcion(): string {
-        throw new Error("Method not implemented.");
+    private horarioRetiro : string;
+    private costoAdicional : number;
+
+    constructor(horarioRetiro: string) {
+        this.horarioRetiro = horarioRetiro;
+        this.costoAdicional = costoAdicionalSalon;
     }
-    getCostoEnvio(): number {
-        throw new Error("Method not implemented.");
+
+    public calcularCostoAdicional(): number {
+        return this.costoAdicional;
+        }
+
+    public getDescripcion(): string {
+        return `Pedido para retirar, horario: ${this.horarioRetiro}`;
     }
+
+    public getHorarioRetiro() : string {
+        return this.horarioRetiro;
+    }
+    
 
 }

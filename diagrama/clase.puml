@@ -3,6 +3,7 @@
 class Cliente {
     - nombre: string
     - apellido: string
+    - pedidoActual: Pedido
 
     + agregarPedido(menu: Menu): void
     + terminarPedido(): Pedido
@@ -81,14 +82,25 @@ Pedido --> ITipoPedido
 
 interface ITipoPedido {
     + getDescripcion(): string
-    + getCostoAdicional(): number
+    + calcularCostoAdicional(): number
 }
 
 class PedidoSalon {
+    - costoAdicional: number
+    - mesa: number
+    
+    + calcularCostoAdicional(): number
+    + getDescripcion(): string
+    + getMesa(): number
 }
 
 class PedidoRetirar {
-    
+    - costoAdicional: number
+    - horarioRetiro: string
+
+    + calcularCostoAdicional(): number
+    + getDescripcion(): string
+    + getHorarioRetiro(): string
 }
 
 class PedidoEnvio {
@@ -96,6 +108,9 @@ class PedidoEnvio {
     - costoEnvio: number
 
     + getDireccion(): string
+    + calcularCostoAdicional(): number
+    + getDescripcion(): string
+    + calcularEnvio(costoEnvio: number): number
 }
 
 ITipoPedido <|.. PedidoSalon
