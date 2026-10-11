@@ -11,7 +11,7 @@ module.exports = tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
-     // '@stylistic': stylistic,
+      '@stylistic': stylistic,
     },
     languageOptions: {
       parserOptions: {
@@ -41,7 +41,10 @@ module.exports = tseslint.config(
 
       // --- No magic numbers: force meaningful named constants ---
       'no-magic-numbers': 'off', // superseded by the TS-aware version below
-      '@typescript-eslint/no-magic-numbers': ['error', { ignoreArrayIndexes: true }],
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        { ignoreArrayIndexes: true, ignoreReadonlyClassProperties: true },
+      ],
 
       // --- Minimum identifier length (force meaningful names) ---
       'id-length': [
