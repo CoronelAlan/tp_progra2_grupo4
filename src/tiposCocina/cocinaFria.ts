@@ -1,3 +1,8 @@
-export default class CocinaFria {
-    
+import { EstacionCocina } from "./estacionCocina";
+import { PlatoPedido } from "../platoPedido";
+
+export class CocinaFria extends EstacionCocina {
+    public constructor(_cola: Map <string, PlatoPedido>) {
+        super(_cola);
+    }
 }

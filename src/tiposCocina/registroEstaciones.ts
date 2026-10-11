@@ -8,11 +8,16 @@ export default class RegistroEstaciones {
     }
 
     public registrar(_tipo: string, _estacion: EstacionCocina): void {
-        let tipo = _tipo;
-        let estacion = _estacion;
+        this.estaciones.set(_tipo, _estacion);
     }
 
     public obtener(tipo: string): EstacionCocina {
+        const estacion = this.estaciones.get(tipo);
 
+        if (!estacion) {
+            throw new Error("No existe una estación para ese tipo");
+        }
+
+        return estacion;
     }
 }
