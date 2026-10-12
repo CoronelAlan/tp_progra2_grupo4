@@ -1,5 +1,5 @@
 import { IPlatoMenu } from "./iplatomenu";
-export class Plato implements IPlatoMenu{
+export class Plato implements IPlatoMenu {
     private nombre: string;
     private precio: number;
 
@@ -8,7 +8,7 @@ export class Plato implements IPlatoMenu{
         this.precio = precio;
     }
 
-    public getNombre():string{
+    public getNombre():string { 
         return this.nombre
     }
 

@@ -12,7 +12,7 @@ export class PlatoPedido {
 
     public marcarListo(): void {}
 
-    public puedeModificarse() : boolean{}
+    public puedeModificarse() : boolean {}
 
     public cambiarEstado(estado: IestadoPlato) : void {};
 }
