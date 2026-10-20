@@ -14,16 +14,7 @@ export abstract class EstacionCocina {
     }
 
     public prepararPlato(): void {
-    for (const [clave, plato] of this.cola) {
-        plato.iniciarPreparacion();
-
-        plato.marcarListo();
-
-        this.cola.delete(clave);
-
-        break;
     }
-}
     
 
 }
