@@ -1,6 +1,13 @@
+import { Plato } from "./iplatomenu/plato";
+import { IEstadoPlato } from "./estadoPlato/IEstadoPlato";
 export class PlatoPedido {
     private plato : Plato;
-    private estado: IestadoPlato;
+    private estado: IEstadoPlato;
+
+    public constructor(plato:Plato, estado:new Pendiente()) {
+        this.plato = plato;
+        this.estado = estado;
+    }
 
     public getPlato() : Plato {
 
