@@ -1,5 +1,5 @@
 import { MedioDePago } from "./mediodepago/mediodepago";
-import Pedido from "./pedido";
+import Pedido from "./pedido/pedido";
 
 export class Cliente {
  private nombre : string;

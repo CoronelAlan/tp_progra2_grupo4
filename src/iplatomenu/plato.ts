@@ -13,11 +13,11 @@ export class Plato implements IPlatoMenu {
     }
 
     public calcularPrecio(): number {
-        
+        return this.precio;
     }
 
     public obtenerPlatos(): Plato[] {
-        
+        return [this];
     }
 
 }

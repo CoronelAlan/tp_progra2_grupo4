@@ -66,15 +66,35 @@ Combo --> IEstrategiaBeneficio
 
 class Pedido {
     - platosCocina: PlatoPedido[]
+    - historialModificacionesPedido: PlatoPedido[][]
     - tipoPedido: ITipoPedido
-    - confirmado: boolean
+    - estado: IEstadoPedido
 
     + agregarPlato(plato: IPlatoMenu): void
     + quitarPlato(plato: IPlatoMenu): void
-    + confirmar(): void
+    + confirmarPedido(): void
     + estaListoParaFacturar(): boolean
     + getTipoPedido(): ITipoPedido
+    + cambiarEstado(nuevoEstado: IEstadoPedido): void
 }
+
+Pedido --> IEstadoPedido
+
+interface IEstadoPedido {
+    + agregarPlato(pedido: Pedido, platoMenu: IPlatoMenu): void
+    + quitarPlato(pedido: Pedido, platoMenu: IPlatoMenu): void
+    + confirmar(pedido: Pedido): void
+    + estaListoParaFacturar(pedido: Pedido): boolean
+}
+
+class PedidoEnConstruccion {
+}
+
+class PedidoConfirmado {
+}
+
+IEstadoPedido <|.. PedidoEnConstruccion
+IEstadoPedido <|.. PedidoConfirmado
 
 Pedido o-- IPlatoMenu
 Pedido *-- PlatoPedido
