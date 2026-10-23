@@ -1,13 +1,15 @@
 import { ITipoPedido } from "../tipoPedido/ItipoPedido";
-import { PlatoPedido } from "../platoPedido";
+import { PlatoPedido } from "../platoPedido/platoPedido";
 import { IPlatoMenu } from "../iplatomenu/iplatomenu";
 import { IEstadoPedido } from "./iestadopedido";
 import { PedidoEnConstruccion } from "./pedidoenconstruccion";
 import { Plato } from "../iplatomenu/plato";
+import { EstadoPendientePlato } from "../platoPedido/estadopendienteplato";
 
 
 const MINUSONE = -1;
 const NUMBER_ONE = 1;
+const ZERO = 0;
 
 export class Pedido {
     private platosCocina: PlatoPedido[]
@@ -81,34 +83,41 @@ export class Pedido {
     }
 
 
+    public calcularPrecioTotal(): number {
+        return this.sumarPlatos() + this.costoAdicional();
+    }
 
 
 
 
 
 
-private removerPlatoIndividual(plato: Plato): void {
-    const index = this.platosCocina.findIndex(
+    private removerPlatoIndividual(plato: Plato): void {
+        const index = this.platosCocina.findIndex(
         item => item.getPlato() === plato && item.puedeModificarse()
     );
 
-    if (index !== MINUSONE) {
-        this.platosCocina.splice(index, NUMBER_ONE);
-    }
+        if (index !== MINUSONE) {
+            this.platosCocina.splice(index, NUMBER_ONE);
+        }
     }
 
+    private sumarPlatos():number {
+        return this.platosCocina.reduce((acumulador, platoPedido) => acumulador + platoPedido.calcularPrecio(), ZERO);
+    }
     
-    
-    
+    private costoAdicional():number {
+        return this.tipoPedido.calcularCostoAdicional();
+    }
+
     private guardarEstadoEnHistorial():void {
         this.historialModificacionesPedido.push([...this.platosCocina]);
     }
 
-    private agregarPlatosNuevosACocina(platoMenu: IPlatoMenu): void {
+    private agregarPlatosNuevosACocina(platoMenu: IPlatoMenu, notaEspecial: string = ""): void {
         const platosNuevos = platoMenu.obtenerPlatos();
         for (const plato of platosNuevos) {
-            this.platosCocina.push(new PlatoPedido(plato, new Pendiente()));
-            //esto habria que ver mejor como interactua con las otras clases
+            this.platosCocina.push(new PlatoPedido(plato, new EstadoPendientePlato(), notaEspecial));
         }
     }
 }

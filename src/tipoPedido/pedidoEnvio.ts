@@ -1,5 +1,5 @@
-import  {ItipoPedido} from "./ItipoPedido"  
-export class PedidoEnvio implements ItipoPedido {
+import  {ITipoPedido} from "./ItipoPedido"  
+export class PedidoEnvio implements ITipoPedido {
     private direccion : string;
     private costoEnvio: number;
 
@@ -7,7 +7,7 @@ export class PedidoEnvio implements ItipoPedido {
         this.costoEnvio = costoEnvio;
         this.direccion = direccion;
     }
-    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
+
     public calcularCostoAdicional(): number {
         
         throw new Error("Method not implemented.");

@@ -1,6 +1,5 @@
 import { MedioDePago } from "./mediodepago";
 
-export class Efectivo extends MedioDePago{
-
+export class Efectivo extends MedioDePago {
 
 }

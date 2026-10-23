@@ -1,20 +1,41 @@
-import { PlatoPedido } from "../platoPedido";
+import { PlatoPedido } from "../platoPedido/platoPedido";
 
 export abstract class EstacionCocina {
-    private cola: Map <string, PlatoPedido>;
+    protected siguienteEstacion: EstacionCocina | null = null;
+    protected platosAsignados: PlatoPedido[] = [];
+    protected categoriaAtendida: string;
 
-    public constructor(_cola: Map <string, PlatoPedido>) {
-        this.cola = _cola;
+    public constructor(categoria: string) {
+        this.categoriaAtendida = categoria;
+    }
+    
+
+    public setSiguiente(estacion: EstacionCocina): EstacionCocina {
+        this.siguienteEstacion = estacion;
+        return estacion;
     }
 
-    public recibirPlato(plato: PlatoPedido): void {
-        const clave = plato.getPlato().getNombre();
+    public procesarPlato(platoPedido: PlatoPedido): void {
+        
+        if (this.puedeManejarPlato(platoPedido)) {
+            this.agregarPlato(platoPedido);
+            return;
+        }
 
-        this.cola.set(clave, plato);
+        
+        if (this.siguienteEstacion) {
+            this.siguienteEstacion.procesarPlato(platoPedido);
+            return;
+        }
+        
+
+    
+        throw new Error("Ninguna estación puede procesar este tipo de plato.");
     }
 
-    public prepararPlato(): void {
-    }
+
+    protected abstract puedeManejarPlato(platoPedido: PlatoPedido):boolean;
+    protected abstract agregarPlato(platoPedido: PlatoPedido): void;
     
 
 }

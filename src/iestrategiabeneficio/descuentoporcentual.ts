@@ -1,12 +1,15 @@
 import { IEstrategiaBeneficio } from "./iestrategiabeneficio";
-export class DescuentoPorcentual implements IEstrategiaBeneficio {
-    private porcentaje: number;
 
-    public constructor(porcentaje:number) {
-        this.porcentaje = porcentaje;
+const PORCENTAJE = 100;
+export class DescuentoPorcentual implements IEstrategiaBeneficio {
+    private porcentajeDescuento: number; 
+
+    public constructor(porcentajeDescuento: number) {
+        this.porcentajeDescuento = porcentajeDescuento;
     }
 
-    public calcular(precioBase: number):number {
-        
+    public calcular(precioBase: number): number {
+        const descuento = precioBase * (this.porcentajeDescuento /PORCENTAJE);
+        return precioBase - descuento;
     }
 }

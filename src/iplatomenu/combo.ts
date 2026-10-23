@@ -14,10 +14,24 @@ export class Combo implements IPlatoMenu {
     }
 
     public calcularPrecio(): number {
+        let precioBase = 0;
+        for (const plato of this.platosIncluidos) {
+            precioBase += plato.calcularPrecio();
+        }
         
+
+        return this.beneficio.calcular(precioBase);
     }
 
     public obtenerPlatos(): Plato[] {
-        
+        return this.platosIncluidos;
+    }
+
+    public getNombre(): string {
+        return this.nombre;
+    }
+
+    public getPlatosIncluidos(): Plato[] {
+        return this.platosIncluidos;
     }
 }

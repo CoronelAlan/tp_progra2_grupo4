@@ -1,7 +1,7 @@
-import {ItipoPedido} from "./ItipoPedido"
+import {ITipoPedido} from "./ItipoPedido"
 const COSTO_ADICIONAL_SALON = 0;
 
-export class PedidoSalon implements ItipoPedido {
+export class PedidoSalon implements ITipoPedido {
     private mesa : number;
     private costoAdicional : number;
 

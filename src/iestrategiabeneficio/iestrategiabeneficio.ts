@@ -1,3 +1,3 @@
-export interface IEstrategiaBeneficio{
-    public calcular(precioBase: number): number
+export interface IEstrategiaBeneficio {
+ calcular(precioBase: number): number
 }

@@ -1,5 +1,5 @@
 import { MedioDePago } from "./mediodepago";
 
-export class VilleteraVirtual extends MedioDePago{
+export class VilleteraVirtual extends MedioDePago {
 
 }

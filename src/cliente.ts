@@ -1,35 +1,24 @@
-import { MedioDePago } from "./mediodepago/mediodepago";
-import Pedido from "./pedido/pedido";
+import { Pedido } from "./pedido/pedido";
 
 export class Cliente {
- private nombre : string;
- private apellido : string;
- private pedidoActual? : Pedido;
- 
- public constructor(nombre: string, apellido: string) {
-    this.apellido = apellido;
-    this.nombre = nombre;
- }
+    private nombre: string;
+    private apellido: string;
+    private pedidos: Pedido[] = [];
 
- public agregarPedido(pedido: Pedido): void {
-   this.pedidoActual = pedido;
- };
-
- public terminarPedido(): Pedido {
-    if (this.pedidoActual === undefined) {
-        throw new Error('El cliente no tiene un pedido activo');
+    public constructor(nombre: string, apellido: string) {
+        this.nombre = nombre;
+        this.apellido = apellido;
     }
 
-    return this.pedidoActual;
-}
+    public getNombreCompleto(): string {
+        return `${this.nombre} ${this.apellido}`;
+    }
 
-public pagar(medioDePago: MedioDePago): number {
-    if (this.pedidoActual === undefined) {
-            throw new Error('El cliente no tiene un pedido activo');
-        }
+    public asociarPedido(pedido: Pedido): void {
+        this.pedidos.push(pedido);
+    }
 
-        const total = this.pedidoActual.calcularTotal(medioDePago);
-
-        return medioDePago.pagar(total);
+    public getPedidos(): Pedido[] {
+        return [...this.pedidos];
     }
 }

@@ -1,16 +1,20 @@
 @startuml
 
+title TP COCINA
+
 class Cliente {
     - nombre: string
     - apellido: string
-    - pedidoActual: Pedido
-
-    + agregarPedido(menu: Menu): void
-    + terminarPedido(): Pedido
-    + pagar(pedido: Pedido, medioDePago: MedioDePago): number
+    - pedidos: Pedido[]
+    
+    + constructor(nombre: string, apellido: string)
+    + getNombreCompleto(): string
+    + asociarPedido(pedido: Pedido): void
+    + getPedidos(): Pedido[]
 }
 
-Cliente --> Pedido
+
+Cliente o-- Pedido
 
 class Menu {
     - platos: IPlatoMenu[]
@@ -139,71 +143,85 @@ ITipoPedido <|.. PedidoEnvio
 
 class PlatoPedido {
     - plato: Plato
-    - estado: IEstadoPlato
-
-    + getPlato(): Plato
-    + iniciarPreparacion(): void
-    + marcarListo(): void
-    + puedeModificarse(): boolean
-    + cambiarEstado(estado: IEstadoPlato): void
-}
-
-PlatoPedido --> Plato
-
-interface IEstadoPlato {
-    + iniciarPreparacion(plato: PlatoPedido): void
-    + marcarListo(plato: PlatoPedido): void
-    + puedeModificarse(): boolean
+    - estado: IEstadoPlatoPedido
+    - notaEspecialPedido: string
+    + calcularPrecio(): number
+    + setEstado(nuevoEstado: IEstadoPlatoPedido): void
+    + pasarAPreparacion(): void
+    + marcarComoListo(): void
     + estaListo(): boolean
+    + puedeModificarse(): boolean
+    + getPlato(): Plato
+    + getNotaEspecialPedido(): string
 }
 
-class Pendiente {
+interface IEstadoPlatoPedido {
+    + pasarAPreparacion(platoPedido: PlatoPedido): void
+    + marcarListo(platoPedido: PlatoPedido): void
+    + estaListo(): boolean
+    + puedeModificarse(): boolean
 }
 
-class EnPreparacion {
+class EstadoPendientePlato {
+
 }
 
-class Listo {
+class EstadoEnPreparacionPlato {
+
 }
 
-IEstadoPlato <|.. Pendiente
-IEstadoPlato <|.. EnPreparacion
-IEstadoPlato <|.. Listo
+class EstadoListoPlato {
 
-PlatoPedido --> IEstadoPlato
+}
+
+' Relaciones
+PlatoPedido o-- IEstadoPlatoPedido
+IEstadoPlatoPedido <|.. EstadoPendientePlato
+IEstadoPlatoPedido <|.. EstadoEnPreparacionPlato
+IEstadoPlatoPedido <|.. EstadoListoPlato
+
+
 
 abstract class EstacionCocina {
-    # cola: PlatoPedido[]
+        
+        # siguienteEstacion: EstacionCocina
+        # platosAsignados: PlatoPedido[]
+        # categoriaAtendida: string
+        + setSiguiente(estacion: EstacionCocina): EstacionCocina
+        + procesarPlato(platoPedido: PlatoPedido): void
+        # puedeManejarPlato(platoPedido: PlatoPedido): boolean
+        # agregarPlato(platoPedido: PlatoPedido): void
+    }
 
-    + recibirPlato(plato: PlatoPedido): void
-    + prepararPlato(): void
-}
+    class BarraBebidas {
 
-class Parrilla {
-}
+    }
 
-class CocinaFria {
-}
+    class Parrilla {
 
-class BarraBebidas {
-}
+    }
 
-class CocinaDulce {
-}
+    class CocinaFria{
 
-EstacionCocina <|-- Parrilla
-EstacionCocina <|-- CocinaFria
-EstacionCocina <|-- BarraBebidas
-EstacionCocina <|-- CocinaDulce
+    }
 
-class RegistroEstaciones {
-    - estaciones: Map<string, EstacionCocina>
+    class CocinaDulce{
 
-    + registrar(tipo: string, estacion: EstacionCocina): void
-    + obtener(tipo: string): EstacionCocina
-}
+    }
 
-RegistroEstaciones o-- EstacionCocina
+    class RegistroEstaciones {
+        - primeraEstacion: EstacionCocina
+        - estacionesRegistradas: EstacionCocina[]
+        + registrarEstacion(estacion: EstacionCocina) void
+        + derivarPlato(platoPedido: PlatoPedido) void
+    }
+
+    EstacionCocina <|-- BarraBebidas
+    EstacionCocina <|-- Parrilla
+    EstacionCocina <|-- CocinaFria
+    EstacionCocina <|-- CocinaDulce
+    EstacionCocina --> EstacionCocina 
+    RegistroEstaciones o-- EstacionCocina 
 
 abstract class MedioDePago {
     + pagar(total: number): number

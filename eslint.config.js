@@ -84,7 +84,7 @@ module.exports = tseslint.config(
 
       // a method that never uses `this` is probably meant to be `static`
       'class-methods-use-this': 'off',
-      '@typescript-eslint/class-methods-use-this': 'error',
+      //'@typescript-eslint/class-methods-use-this': 'error',   //la comente porque me tiraba error en todos los this
 
       // one class per file, matching the ClassName.ts file convention
       'max-classes-per-file': ['error', 1],

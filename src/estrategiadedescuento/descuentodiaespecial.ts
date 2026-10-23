@@ -1,6 +1,7 @@
 import { IEstrategiaDeDescuento } from "./iestrategiadescuento";
 import { DiaDeLaSemana } from "../diasemana";
 const NUMBER = 100;
+const ZERO = 0;
 export class DescuentoDiaEspecial implements IEstrategiaDeDescuento {
     private porcentaje:number;
     private diaSemana: DiaDeLaSemana;
@@ -11,15 +12,15 @@ export class DescuentoDiaEspecial implements IEstrategiaDeDescuento {
     }
 
     public calcularDescuento(total: number, diaDeDescuento: DiaDeLaSemana): number {
-        let resultado = 0;
+        let resultado;
         if (this.diaSemana === diaDeDescuento) {
             resultado = total * (this.porcentaje/NUMBER);
         }
         else {
-            resultado = total
+            resultado = ZERO
         }
 
-        return resultado;
+        return resultado ;
 
     }
 }

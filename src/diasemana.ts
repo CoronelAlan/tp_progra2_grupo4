@@ -1,5 +1,5 @@
 
-export enum DiaDeLaSemana{
+export enum DiaDeLaSemana {
     LUNES,
     MARTES,
     MIERCOLES,

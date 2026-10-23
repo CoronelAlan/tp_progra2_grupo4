@@ -19,7 +19,8 @@ export class PedidoEnConstruccion implements IEstadoPedido {
         pedido.cambiarEstadoPedido(new PedidoConfirmado());
     }
 
-    public estaListoParaFacturar(Pedido: Pedido): boolean {
+    public estaListoParaFacturar(pedido: Pedido): boolean {
+         void pedido;
         return false;
     }
 }
