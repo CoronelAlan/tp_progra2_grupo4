@@ -7,7 +7,6 @@ class Cliente {
     - apellido: string
     - pedidos: Pedido[]
     
-    + constructor(nombre: string, apellido: string)
     + getNombreCompleto(): string
     + asociarPedido(pedido: Pedido): void
     + getPedidos(): Pedido[]
@@ -20,13 +19,14 @@ class Menu {
     - platos: IPlatoMenu[]
 
     + agregarPlato(plato: IPlatoMenu): void
-    + buscarPlato(nombre: string): IPlatoMenu
-    + getPlatos(): IPlatoMenu[]
+    + buscarPlatoPorNombre(nombre: string): IPlatoMenu
+    + getPlato(): IPlatoMenu[]
 }
 
 interface IPlatoMenu {
     + calcularPrecio(): number
     + obtenerPlatos(): Plato[]
+    + getNombre(): string
 }
 
 Menu o-- IPlatoMenu
@@ -34,8 +34,11 @@ Menu o-- IPlatoMenu
 class Plato {
     - nombre: string
     - precio: number
-
+    - categoria: string
+    + getCategoria(): string
     + getNombre(): string
+    + calcularPrecio(): number
+    + obtenerPlatos(): Plato[]
 }
 
 IPlatoMenu <|.. Plato
@@ -44,6 +47,10 @@ class Combo {
     - nombre: string
     - platosIncluidos: Plato[]
     - beneficio: IEstrategiaBeneficio
+    + calcularPrecio(): number 
+    + obtenerPlatos(): Plato[]
+    + public getNombre(): string
+    + getPlatosIncluidos(): Plato[]
 }
 
 IPlatoMenu <|.. Combo
@@ -55,12 +62,13 @@ interface IEstrategiaBeneficio {
 }
 
 class DescuentoPorcentual {
-    - porcentaje: number
+    - porcentajeDescuento: number
+    + calcular(precioBase: number): number
 }
 
 class PrecioFijoCombo {
     - precioFijo: number
-
+    + calcular(precioBase: number):number
 }
 
 IEstrategiaBeneficio <|.. DescuentoPorcentual
@@ -215,7 +223,7 @@ abstract class EstacionCocina {
         + registrarEstacion(estacion: EstacionCocina) void
         + derivarPlato(platoPedido: PlatoPedido) void
     }
-
+    EstacionCocina *------- PlatoPedido
     EstacionCocina <|-- BarraBebidas
     EstacionCocina <|-- Parrilla
     EstacionCocina <|-- CocinaFria
@@ -231,6 +239,7 @@ class Efectivo {
 }
 
 class Tarjeta {
+    - recargoPorcentaje: number
 }
 
 class BilleteraVirtual {
@@ -250,7 +259,8 @@ class DescuentoEfectivo {
 
 class DescuentoDiaEspecial {
     - porcentaje: number
-    - dia: number
+    - diaSemana: DiaDeLaSemana
+    + calcularDescuento(total: number, diaDeDescuento: DiaDeLaSemana): number
 }
 
 IEstrategiaDescuento <|.. DescuentoEfectivo
@@ -259,8 +269,10 @@ IEstrategiaDescuento <|.. DescuentoDiaEspecial
 
 class CalculadoraCobro {
     - descuentos: IEstrategiaDescuento[]
-
+    + agregarDescuento(estrategia: IEstrategiaDeDescuento): void
     + calcularTotal(pedido: Pedido, medio: MedioDePago): number
+    - aplicarMejorDescuento(totalBase: number, diaActual: DiaDeLaSemana): number
+    - procesarMedioDePago(medioDePago: MedioDePago, monto: number): number
 }
 
 CalculadoraCobro --> Pedido
@@ -270,8 +282,9 @@ CalculadoraCobro o-- IEstrategiaDescuento
 class HistorialPedidos {
     - pedidosFinalizados: Pedido[]
 
-    + registrar(pedido: Pedido): void
+    + registrarPedido(pedido: Pedido): void
     + getPedidosFinalizados(): Pedido[]
+    + buscarPorTipo(tipoDeDescripcion: string): Pedido[]
 }
 
 HistorialPedidos o-- Pedido

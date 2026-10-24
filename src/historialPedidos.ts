@@ -1,7 +1,7 @@
 import { Pedido } from "./pedido/pedido";
 
 
-export default class HistorialPedidos {
+export class HistorialPedidos {
     private pedidosFinalizados: Pedido[];
 
     public constructor(_pedidosFinalizados: Pedido[]) {
