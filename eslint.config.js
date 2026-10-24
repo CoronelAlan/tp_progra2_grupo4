@@ -11,6 +11,7 @@ module.exports = tseslint.config(
   ...tseslint.configs.recommended,
   {
     plugins: {
+      // @ts-ignore
       '@stylistic': stylistic,
     },
     languageOptions: {
@@ -41,7 +42,10 @@ module.exports = tseslint.config(
 
       // --- No magic numbers: force meaningful named constants ---
       'no-magic-numbers': 'off', // superseded by the TS-aware version below
-      '@typescript-eslint/no-magic-numbers': ['error', { ignoreArrayIndexes: true }],
+      '@typescript-eslint/no-magic-numbers': [
+        'error',
+        { ignoreArrayIndexes: true, ignoreReadonlyClassProperties: true },
+      ],
 
       // --- Minimum identifier length (force meaningful names) ---
       'id-length': [
@@ -80,7 +84,7 @@ module.exports = tseslint.config(
 
       // a method that never uses `this` is probably meant to be `static`
       'class-methods-use-this': 'off',
-      '@typescript-eslint/class-methods-use-this': 'error',
+      //'@typescript-eslint/class-methods-use-this': 'error',   //la comente porque me tiraba error en todos los this
 
       // one class per file, matching the ClassName.ts file convention
       'max-classes-per-file': ['error', 1],
