@@ -1,7 +1,7 @@
 import { EstacionCocina } from "./estacionCocina";
 import { PlatoPedido } from '../platoPedido/platoPedido';
 
-export class EstacionCocinaFria extends EstacionCocina {
+export class Parrilla extends EstacionCocina {
     protected puedeManejarPlato(platoPedido: PlatoPedido): boolean {
         return platoPedido.getPlato().getCategoria() === this.categoriaAtendida;
     }
