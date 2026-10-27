@@ -1,13 +1,13 @@
 import {ItipoPedido} from "./ItipoPedido"
-const costoAdicionalSalon = 0;
+const COSTO_ADICIONAL_SALON = 0;
 
 export class PedidoSalon implements ItipoPedido {
     private mesa : number;
     private costoAdicional : number;
 
-    constructor(mesa: number) {
+    public constructor(mesa: number) {
         this.mesa = mesa;
-        this.costoAdicional = costoAdicionalSalon;
+        this.costoAdicional = COSTO_ADICIONAL_SALON;
     }
 
     public getDescripcion(): string {
