@@ -1,7 +1,7 @@
 import { IEstrategiaDeDescuento } from "./iestrategiadescuento";
 const PORCENTAJE = 100;
 const NUMBER = 100;
-export class DescuentoEfectivo implements IEstrategiaDeDescuento{
+export class DescuentoEfectivo implements IEstrategiaDeDescuento {
 
 
     private porcentaje: number;

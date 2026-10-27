@@ -1,17 +1,26 @@
-export class Menu implements IplatoMenu {
+import { IPlatoMenu } from "./iplatomenu/iplatomenu";
 
-    private platos : IplatoMenu[];
 
-    public constructor(platos : IplatoMenu[]) {
+export class Menu {
+
+    private platos : IPlatoMenu[];
+
+    public constructor(platos : IPlatoMenu[]) {
         this.platos = platos;
     }
 
-    public agregarPlato(plato: IplatoMenu): void{};
+    public agregarPlato(item: IPlatoMenu): void {
+        this.platos.push(item);
+    }
 
-    public buscarPlato(nombre: string): IplatoMenu{};
+    public buscarPlatoPorNombre(nombre: string): IPlatoMenu | undefined {
+        return this.platos.find(plato => plato.getNombre() === nombre)
+    }
 
-    public getPlato(): IplatoMenu[]{};
+    public getPlato(): IPlatoMenu[] {
+        return this.platos;
+    }
 
-
+    
 
 }

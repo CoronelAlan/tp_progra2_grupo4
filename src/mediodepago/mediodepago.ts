@@ -1,7 +1,7 @@
 
-export abstract class MedioDePago{
+export abstract class MedioDePago {
 
-   public  pagar(total: number): number{
-      return total;
-   }
+   public pagar(monto: number): number {
+     return monto;
+}
 }

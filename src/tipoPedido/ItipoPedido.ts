@@ -1,4 +1,4 @@
-export interface ItipoPedido {
+export interface ITipoPedido {
     getDescripcion(): string
     calcularCostoAdicional(): number
 }

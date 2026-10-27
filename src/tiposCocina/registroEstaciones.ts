@@ -1,23 +1,31 @@
 import { EstacionCocina } from "./estacionCocina";
+import { PlatoPedido } from "../platoPedido/platoPedido";
 
-export default class RegistroEstaciones {
-    private estaciones: Map <string, EstacionCocina>
+export class RegistroEstaciones {
+    private primeraEstacion: EstacionCocina | null = null;
+    private estacionesRegistradas: EstacionCocina[] = [];
 
-    public constructor(_estaciones: Map <string, EstacionCocina>) {
-        this.estaciones = _estaciones;
-    }
-
-    public registrar(_tipo: string, _estacion: EstacionCocina): void {
-        this.estaciones.set(_tipo, _estacion);
-    }
-
-    public obtener(tipo: string): EstacionCocina {
-        const estacion = this.estaciones.get(tipo);
-
-        if (!estacion) {
-            throw new Error("No existe una estación para ese tipo");
+    public registrarEstacion(estacion: EstacionCocina): void {
+        this.estacionesRegistradas.push(estacion);
+        if (!this.primeraEstacion) {
+            this.primeraEstacion = estacion;
+        } else {
+            let actual = this.primeraEstacion;
+            while (actual['siguienteEstacion'] !== null) {
+                actual = actual['siguienteEstacion'] as EstacionCocina;
+            }
+            actual.setSiguiente(estacion);
         }
+    }
 
-        return estacion;
+    public derivarPlato(platoPedido: PlatoPedido): void {
+        if (!this.primeraEstacion) {
+            throw new Error("No hay estaciones de cocina configuradas en el sistema.");
+        }
+        this.primeraEstacion.procesarPlato(platoPedido);
+    }
+
+    public getEstaciones(): EstacionCocina[] {
+        return this.estacionesRegistradas;
     }
 }
