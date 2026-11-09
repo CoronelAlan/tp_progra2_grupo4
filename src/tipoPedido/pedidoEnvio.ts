@@ -9,7 +9,7 @@ export class PedidoEnvio implements ITipoPedido {
     }
 
     public calcularCostoAdicional(): number {
-        
+        // Implementar codigo y metodo
         throw new Error("Method not implemented.");
     }
     public getDescripcion(): string {
