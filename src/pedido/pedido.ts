@@ -5,6 +5,7 @@ import { IEstadoPedido } from "./iestadopedido";
 import { PedidoEnConstruccion } from "./pedidoenconstruccion";
 import { Plato } from "../iplatomenu/plato";
 import { EstadoPendientePlato } from "../platoPedido/estadopendienteplato";
+import { RegistroEstaciones } from "../tiposCocina/registroEstaciones";
 
 
 const MINUSONE = -1;
@@ -36,10 +37,13 @@ export class Pedido {
         this.estado.quitarPlato(this, platoMenu);
     }
     
-    public confirmarPedido(): void {
-        this.estado.confirmar(this)
-
+    public confirmarPedido(registroEstaciones: RegistroEstaciones): void {
+    
+    for (const platoPedido of this.platosCocina) {
+        registroEstaciones.derivarPlato(platoPedido);
     }
+    this.estado.confirmar(this);
+}
 
     public estaListoParaFacturar(): boolean {
         return this.estado.estaListoParaFacturar(this);
@@ -93,14 +97,21 @@ export class Pedido {
 
 
     private removerPlatoIndividual(plato: Plato): void {
-        const index = this.platosCocina.findIndex(
-        item => item.getPlato() === plato && item.puedeModificarse()
-    );
+    const platoEnPedido = this.platosCocina.find(item => item.getPlato() === plato);
 
-        if (index !== MINUSONE) {
-            this.platosCocina.splice(index, NUMBER_ONE);
-        }
+    if (!platoEnPedido) {
+        throw new Error("El plato que intenta remover no se encuentra en el pedido.");
     }
+
+    if (!platoEnPedido.puedeModificarse()) {
+        throw new Error("No se puede remover un plato que ya se encuentra en preparación o listo.");
+    }
+
+    const index = this.platosCocina.indexOf(platoEnPedido);
+    if (index !== MINUSONE) {
+        this.platosCocina.splice(index, NUMBER_ONE);
+    }
+}
 
     private sumarPlatos():number {
         return this.platosCocina.reduce((acumulador, platoPedido) => acumulador + platoPedido.calcularPrecio(), ZERO);

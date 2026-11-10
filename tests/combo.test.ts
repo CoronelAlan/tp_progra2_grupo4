@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import { DeepMockProxy, mockDeep } from "jest-mock-extended";
-import { Combo } from "../src/iplatoMenu/combo";
-import { Plato } from "../src/iplatoMenu/plato";
+import { Combo } from "../src/iplatomenu/combo";
+import { Plato } from "../src/iplatomenu/plato";
 import { IEstrategiaBeneficio } from "../src/iestrategiabeneficio/iestrategiabeneficio";
 
 describe("Test de la clase Combo (Composite + Strategy Pattern)", () => {

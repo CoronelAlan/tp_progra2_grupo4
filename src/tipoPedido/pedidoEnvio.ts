@@ -10,7 +10,7 @@ export class PedidoEnvio implements ITipoPedido {
 
     public calcularCostoAdicional(): number {
         
-        throw new Error("Method not implemented.");
+      return this.costoEnvio
     }
     public getDescripcion(): string {
         return `Pedido para envio, direccion: ${this.direccion}`;

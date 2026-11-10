@@ -4,23 +4,38 @@ import { RegistroEstaciones } from "../src/tiposCocina/registroEstaciones"; // A
 import { EstacionCocina } from "../src/tiposCocina/estacionCocina";
 import { PlatoPedido } from "../src/platoPedido/platoPedido";
 
-// Creamos un Stub de EstacionCocina para simular el comportamiento en las pruebas
+// Creamos un Stub configurable para simular el encadenamiento de la cadena de responsabilidad
 class EstacionStub extends EstacionCocina {
     public procesarPlatoMock = jest.fn();
+    private categoriaAtendidaLocal: string;
 
-    protected puedeManejarPlato(_platoPedido: PlatoPedido): boolean {
-        return true;
+    constructor(categoria: string) {
+        super(categoria);
+        this.categoriaAtendidaLocal = categoria;
     }
+
+    protected puedeManejarPlato(platoPedido: PlatoPedido): boolean {
+        // Permite simular qué estación maneja qué categoría
+        return platoPedido.getPlato().getCategoria() === this.categoriaAtendidaLocal;
+    }
+
     protected agregarPlato(_platoPedido: PlatoPedido): void {}
 
     public procesarPlato(platoPedido: PlatoPedido): void {
-        this.procesarPlatoMock(platoPedido);
+        if (this.puedeManejarPlato(platoPedido)) {
+            this.procesarPlatoMock(platoPedido);
+        } else if (this.siguienteEstacion) {
+            this.siguienteEstacion.procesarPlato(platoPedido);
+        } else {
+            throw new Error("Ninguna estación puede procesar este tipo de plato.");
+        }
     }
 }
 
 describe("Test de la clase RegistroEstaciones (Chain of Responsibility Manager)", () => {
 
     let platoPedidoMock: DeepMockProxy<PlatoPedido> = mockDeep<PlatoPedido>();
+    let platoMock = { getCategoria: () => "Entradas" };
 
     it("Debe inicializarse vacío y sin estaciones registradas", () => {
         const registro = new RegistroEstaciones();
@@ -31,17 +46,22 @@ describe("Test de la clase RegistroEstaciones (Chain of Responsibility Manager)"
         }).toThrow("No hay estaciones de cocina configuradas en el sistema.");
     });
 
-    it("Debe registrar la primera estación correctamente y asignarla como inicial", () => {
+    it("Debe registrar la estación y permitir derivar el plato correctamente a través de la interfaz pública", () => {
         const registro = new RegistroEstaciones();
         const estacion1 = new EstacionStub("Entradas");
 
         registro.registrarEstacion(estacion1);
 
         expect(registro.getEstaciones()).toContain(estacion1);
-        expect((registro as any).primeraEstacion).toBe(estacion1);
+
+        // Derivamos el plato y comprobamos mediante el comportamiento público que la estación lo procesó
+        platoPedidoMock.getPlato.mockReturnValue(platoMock as any);
+        registro.derivarPlato(platoPedidoMock);
+
+        expect(estacion1.procesarPlatoMock).toHaveBeenCalledWith(platoPedidoMock);
     });
 
-    it("Debe encadenar correctamente múltiples estaciones agregadas de forma sucesiva", () => {
+    it("Debe encadenar múltiples estaciones y derivar el plato a la estación correcta de la cadena", () => {
         const registro = new RegistroEstaciones();
         const estacion1 = new EstacionStub("Entradas");
         const estacion2 = new EstacionStub("Principales");
@@ -55,20 +75,16 @@ describe("Test de la clase RegistroEstaciones (Chain of Responsibility Manager)"
         expect(estaciones).toHaveLength(3);
         expect(estaciones).toEqual([estacion1, estacion2, estacion3]);
 
-        // Verificamos que se haya enlazado el 'siguienteEstacion' correctamente
-        expect((estacion1 as any).siguienteEstacion).toBe(estacion2);
-        expect((estacion2 as any).siguienteEstacion).toBe(estacion3);
-        expect((estacion3 as any).siguienteEstacion).toBeNull();
-    });
+        // Configuramos un plato de categoría "Postres" para verificar que la cadena 
+        // pasa por estacion1 y estacion2 hasta llegar y ser procesado por estacion3
+        const platoPostre = { getCategoria: () => "Postres" };
+        platoPedidoMock.getPlato.mockReturnValue(platoPostre as any);
 
-    it("Debe derivar el plato correctamente llamando a procesarPlato de la primera estación", () => {
-        const registro = new RegistroEstaciones();
-        const estacion1 = new EstacionStub("Entradas");
-
-        registro.registrarEstacion(estacion1);
         registro.derivarPlato(platoPedidoMock);
 
-        expect(estacion1.procesarPlatoMock).toHaveBeenCalledWith(platoPedidoMock);
+        expect(estacion1.procesarPlatoMock).not.toHaveBeenCalled();
+        expect(estacion2.procesarPlatoMock).not.toHaveBeenCalled();
+        expect(estacion3.procesarPlatoMock).toHaveBeenCalledWith(platoPedidoMock);
     });
 
 });

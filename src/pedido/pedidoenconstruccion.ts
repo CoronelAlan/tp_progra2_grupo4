@@ -9,7 +9,6 @@ export class PedidoEnConstruccion implements IEstadoPedido {
         pedido.agregarPlatoAlHistorialYCocina(platoMenu);
     }
 
-
     public quitarPlato(pedido: Pedido, platoMenu: IPlatoMenu): void {
         pedido.removerPlatoDelPedido(platoMenu);
     }
@@ -20,7 +19,7 @@ export class PedidoEnConstruccion implements IEstadoPedido {
     }
 
     public estaListoParaFacturar(pedido: Pedido): boolean {
-         void pedido;
+        void pedido;
         return false;
     }
 }

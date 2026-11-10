@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { TarjetaDeCredito } from "../src/medioDePago/tarjetadecredito";
+import { TarjetaDeCredito } from "../src/mediodepago/tarjetadecredito";
 
 describe("Test de la clase TarjetaDeCredito", () => {
 

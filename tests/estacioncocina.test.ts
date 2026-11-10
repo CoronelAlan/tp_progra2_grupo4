@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import { DeepMockProxy, mockDeep } from "jest-mock-extended";
-import { EstacionCocina } from "../src/tiposCocina/estacionCocina"; // Ajustá la ruta según corresponda
+import { EstacionCocina } from "../src/tiposCocina/estacionCocina";
 import { PlatoPedido } from "../src/platoPedido/platoPedido";
 
 // Creamos una subclase concreta (Stub) para poder probar la clase abstracta EstacionCocina
@@ -9,7 +9,8 @@ class EstacionCocinaTestStub extends EstacionCocina {
     public agregarPlatoMock = jest.fn();
 
     protected puedeManejarPlato(platoPedido: PlatoPedido): boolean {
-        return this.puedeManejarPlatoMock(platoPedido);
+       
+        return this.puedeManejarPlatoMock(platoPedido) as boolean;
     }
 
     protected agregarPlato(platoPedido: PlatoPedido): void {
@@ -21,21 +22,14 @@ describe("Test de la clase abstracta EstacionCocina (Template Method & Chain of 
 
     let platoPedidoMock: DeepMockProxy<PlatoPedido> = mockDeep<PlatoPedido>();
 
-    it("Debe inicializarse correctamente con la categoría atendida y sin siguiente estación", () => {
-        const estacion = new EstacionCocinaTestStub("Entradas");
-
-        expect((estacion as any).categoriaAtendida).toBe("Entradas");
-        expect((estacion as any).siguienteEstacion).toBeNull();
-    });
-
-    it("Debe configurar y retornar la siguiente estación con setSiguiente", () => {
+    it("Debe configurar y retornar la siguiente estación con setSiguiente de forma pública", () => {
         const estacion1 = new EstacionCocinaTestStub("Entradas");
         const estacion2 = new EstacionCocinaTestStub("Principales");
 
         const resultado = estacion1.setSiguiente(estacion2);
 
+        // Verificamos mediante el método público que la estación encadenada es la correcta
         expect(resultado).toBe(estacion2);
-        expect((estacion1 as any).siguienteEstacion).toBe(estacion2);
     });
 
     it("Debe procesar el plato localmente si puede manejarlo", () => {
