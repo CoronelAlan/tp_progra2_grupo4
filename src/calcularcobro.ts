@@ -13,7 +13,7 @@ export class CalculadoraCobro {
 
     public calcularTotal(pedido: Pedido, medioDePago: MedioDePago, diaActual: DiaDeLaSemana): number {
         const totalBase = pedido.calcularPrecioTotal();
-        const totalConDescuento = this.aplicarMejorDescuento(totalBase, diaActual);
+        const totalConDescuento = this.aplicarMejorDescuento(totalBase, diaActual, medioDePago);
         const totalFinal = this.procesarMedioDePago(medioDePago, totalConDescuento);
 
         return totalFinal;
@@ -24,12 +24,12 @@ export class CalculadoraCobro {
     }
 
 
-    private aplicarMejorDescuento(totalBase: number, diaActual: DiaDeLaSemana): number {
+    private aplicarMejorDescuento(totalBase: number, diaActual: DiaDeLaSemana, medioDePago:MedioDePago): number {
         let mayorDescuento = 0;
 
         for (const estrategia of this.descuentos) {
 
-            const montoDescuento = estrategia.calcularDescuento(totalBase, diaActual);
+            const montoDescuento = estrategia.calcularDescuento(totalBase, diaActual, medioDePago);
             
             if (montoDescuento > mayorDescuento) {
                 mayorDescuento = montoDescuento;

@@ -232,7 +232,9 @@ abstract class EstacionCocina {
     RegistroEstaciones o-- EstacionCocina 
 
 abstract class MedioDePago {
+    -tipoDePago: string
     + pagar(total: number): number
+    + getTipoDePago(): string
 }
 
 class Efectivo {
@@ -250,7 +252,7 @@ MedioDePago <|-- Tarjeta
 MedioDePago <|-- BilleteraVirtual
 
 interface IEstrategiaDescuento {
-    + calcularDescuento(total: number): number
+    + calcularDescuento(total: number, diaDeSemana:DiaDeLaSemana, medioDePago: MedioDePago): number
 }
 
 class DescuentoEfectivo {
@@ -271,7 +273,7 @@ class CalculadoraCobro {
     - descuentos: IEstrategiaDescuento[]
     + agregarDescuento(estrategia: IEstrategiaDeDescuento): void
     + calcularTotal(pedido: Pedido, medio: MedioDePago): number
-    - aplicarMejorDescuento(totalBase: number, diaActual: DiaDeLaSemana): number
+    - aplicarMejorDescuento(totalBase: number, diaActual: DiaDeLaSemana, medioDepago: MedioDePago): number
     - procesarMedioDePago(medioDePago: MedioDePago, monto: number): number
 }
 

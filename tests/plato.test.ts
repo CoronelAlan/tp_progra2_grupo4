@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { Plato } from "../src/iplatoMenu/plato";
+import { Plato } from "../src/iplatomenu/plato";
 
 describe("Test de la clase Plato", () => {
 

@@ -7,8 +7,8 @@ const NUMBER_ONE = 1;
 export class TarjetaDeCredito extends MedioDePago {
     private recargoPorcentaje: number;
 
-   public constructor(recargoPorcentaje?: number) {
-        super();
+   public constructor(recargoPorcentaje?: number, tipoDePago:string = "tarjeta de credito") {
+        super(tipoDePago);
         this.recargoPorcentaje = recargoPorcentaje ?? ZERO; 
     }
 

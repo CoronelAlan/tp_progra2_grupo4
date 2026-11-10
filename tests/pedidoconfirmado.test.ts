@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, beforeEach } from "@jest/globals";
 import { DeepMockProxy, mockDeep } from "jest-mock-extended";
 import { PedidoConfirmado } from "../src/pedido/pedidoconfirmado";
 import { Pedido } from "../src/pedido/pedido";
@@ -6,9 +6,15 @@ import { IPlatoMenu } from "../src/iplatomenu/iplatomenu";
 
 describe("Test de la clase PedidoConfirmado (State Pattern)", () => {
 
-    let estadoConfirmado: PedidoConfirmado = new PedidoConfirmado();
-    let pedidoMock: DeepMockProxy<Pedido> = mockDeep<Pedido>();
-    let platoMenuMock: DeepMockProxy<IPlatoMenu> = mockDeep<IPlatoMenu>();
+    let estadoConfirmado: PedidoConfirmado;
+    let pedidoMock: DeepMockProxy<Pedido>;
+    let platoMenuMock: DeepMockProxy<IPlatoMenu>;
+
+    beforeEach(() => {
+        estadoConfirmado = new PedidoConfirmado();
+        pedidoMock = mockDeep<Pedido>();
+        platoMenuMock = mockDeep<IPlatoMenu>();
+    });
 
     it("Debe lanzar un Error al intentar agregar un plato en estado confirmado", () => {
         expect(() => {
