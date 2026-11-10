@@ -29,4 +29,4 @@ describe("Test de la clase DescuentoDiaEspecial (Strategy Pattern)", () => {
         expect(resultado).toBe(0);
     });
 
-});
+})
