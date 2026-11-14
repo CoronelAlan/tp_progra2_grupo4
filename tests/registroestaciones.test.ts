@@ -87,4 +87,87 @@ describe("Test de la clase RegistroEstaciones (Chain of Responsibility Manager)"
         expect(estacion3.procesarPlatoMock).toHaveBeenCalledWith(platoPedidoMock);
     });
 
+
+    it("No debe validar platos si no hay estaciones registradas", () => {
+        const registro = new RegistroEstaciones();
+
+        expect(() => {
+            registro.validarPlatos([platoPedidoMock]);
+        }).toThrow("No hay estaciones de cocina configuradas en el sistema.");
+    });
+
+    it("Debe validar correctamente platos de distintas estaciones", () => {
+        const registro = new RegistroEstaciones();
+        const estacion1 = new EstacionStub("Entradas");
+        const estacion2 = new EstacionStub("Postres");
+
+        registro.registrarEstacion(estacion1);
+        registro.registrarEstacion(estacion2);
+
+        const platoEntrada = mockDeep<PlatoPedido>();
+        const platoPostre = mockDeep<PlatoPedido>();
+
+        platoEntrada.getPlato.mockReturnValue({
+            getCategoria: () => "Entradas"
+        } as any);
+
+        platoPostre.getPlato.mockReturnValue({
+            getCategoria: () => "Postres"
+        } as any);
+
+        expect(() => {
+            registro.validarPlatos([platoEntrada, platoPostre]);
+        }).not.toThrow();
+
+        expect(estacion1.procesarPlatoMock).not.toHaveBeenCalled();
+        expect(estacion2.procesarPlatoMock).not.toHaveBeenCalled();
+    });
+
+    it("No debe validar un pedido si alguno de sus platos no tiene estación", () => {
+        const registro = new RegistroEstaciones();
+        const estacion = new EstacionStub("Entradas");
+
+        registro.registrarEstacion(estacion);
+
+        const platoValido = mockDeep<PlatoPedido>();
+        const platoInvalido = mockDeep<PlatoPedido>();
+
+        platoValido.getPlato.mockReturnValue({
+            getCategoria: () => "Entradas"
+        } as any);
+
+        platoInvalido.getPlato.mockReturnValue({
+            getCategoria: () => "Bebidas"
+        } as any);
+
+        expect(() => {
+            registro.validarPlatos([platoValido, platoInvalido]);
+        }).toThrow("Ninguna estación puede procesar este tipo de plato.");
+
+        expect(estacion.procesarPlatoMock).not.toHaveBeenCalled();
+    });
+
+    it("No debe derivar un plato si ninguna estación puede procesarlo", () => {
+        const registro = new RegistroEstaciones();
+        const estacion1 = new EstacionStub("Entradas");
+        const estacion2 = new EstacionStub("Postres");
+
+        registro.registrarEstacion(estacion1);
+        registro.registrarEstacion(estacion2);
+
+        const platoInvalido = mockDeep<PlatoPedido>();
+
+        platoInvalido.getPlato.mockReturnValue({
+            getCategoria: () => "Bebidas"
+        } as any);
+
+        expect(() => {
+            registro.derivarPlato(platoInvalido);
+        }).toThrow("Ninguna estación puede procesar este tipo de plato.");
+
+        expect(estacion1.procesarPlatoMock).not.toHaveBeenCalled();
+        expect(estacion2.procesarPlatoMock).not.toHaveBeenCalled();
+    });
+
+
 });
