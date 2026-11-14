@@ -13,6 +13,14 @@ export class PedidoEnConstruccion implements IEstadoPedido {
         pedido.removerPlatoDelPedido(platoMenu);
     }
 
+    public validarConfirmacion(): void {
+    return;
+    }
+
+    public validarDeshacer(): void {
+    return;
+    }   
+
     public confirmar(pedido: Pedido): void {
         console.log(" Pedido confirmado, pasando a cocina ");
         pedido.cambiarEstadoPedido(new PedidoConfirmado());

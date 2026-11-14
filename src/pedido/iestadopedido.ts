@@ -9,4 +9,8 @@ export interface IEstadoPedido {
     confirmar(pedido: Pedido): void;
 
     estaListoParaFacturar(Pedido: Pedido): boolean;
+
+    validarConfirmacion(): void;
+
+    validarDeshacer(): void;
 }

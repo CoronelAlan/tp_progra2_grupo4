@@ -1,0 +1,52 @@
+@startuml
+!theme plain
+title Confirmación de pedido y derivación a cocina
+hide footbox
+autonumber
+
+actor Mozo
+participant "pedido: Pedido" as Pedido
+participant "estado: PedidoEnConstruccion" as Estado
+participant "registro: RegistroEstaciones" as Registro
+participant "primera: EstacionCocina" as Primera
+participant "siguiente: EstacionCocina" as Siguiente
+
+Mozo -> Pedido : confirmarPedido(registro)
+activate Pedido
+Pedido -> Estado : validarConfirmacion()
+Estado --> Pedido : permitido
+Pedido -> Registro : validarPlatos(platosCocina)
+activate Registro
+loop Por cada plato
+    Registro -> Primera : puedeProcesarPlato(platoPedido)
+    alt La primera estación acepta el plato
+        Primera --> Registro : true
+    else No acepta el plato
+        Primera -> Siguiente : puedeProcesarPlato(platoPedido)
+        Siguiente --> Primera : true / false
+        Primera --> Registro : resultado
+    end
+end
+Registro --> Pedido : validación correcta
+Deactivate Registro
+
+loop Por cada plato del pedido
+    Pedido -> Registro : derivarPlato(platoPedido)
+    Registro -> Primera : procesarPlato(platoPedido)
+    alt Corresponde a la primera estación
+        Primera -> Primera : agregarPlato(platoPedido)
+    else Corresponde a otra estación
+        Primera -> Siguiente : procesarPlato(platoPedido)
+        Siguiente -> Siguiente : agregarPlato(platoPedido)
+    end
+end
+Pedido -> Estado : confirmar(pedido)
+Estado -> Pedido : cambiarEstadoPedido(new PedidoConfirmado())
+Pedido --> Mozo : pedido confirmado
+Deactivate Pedido
+
+note over Registro, Siguiente
+  Cada estación agrega sus platos al final de la cola.
+  iniciarSiguientePlato() los toma en orden FIFO.
+end note
+@enduml

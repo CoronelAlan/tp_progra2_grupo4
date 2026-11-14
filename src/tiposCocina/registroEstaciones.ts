@@ -18,6 +18,20 @@ export class RegistroEstaciones {
         }
     }
 
+
+    public validarPlatos(platos: PlatoPedido[]): void {
+        if (!this.primeraEstacion) {
+        throw new Error("No hay estaciones de cocina configuradas en el sistema.");
+        }
+
+        for (const platoPedido of platos) {
+            if (!this.primeraEstacion.puedeProcesarPlato(platoPedido)) {
+            throw new Error("Ninguna estación puede procesar este tipo de plato.");
+            }
+        }
+}
+
+
     public derivarPlato(platoPedido: PlatoPedido): void {
         if (!this.primeraEstacion) {
             throw new Error("No hay estaciones de cocina configuradas en el sistema.");

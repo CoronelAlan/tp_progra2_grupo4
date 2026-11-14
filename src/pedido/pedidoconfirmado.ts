@@ -17,6 +17,14 @@ export class PedidoConfirmado implements IEstadoPedido {
         throw new Error("No se puede modificar un pedido confirmado.");
     }
 
+    public validarConfirmacion(): void {
+    throw new Error("El pedido ya se encuentra confirmado.");
+    }
+
+    public validarDeshacer(): void {
+    throw new Error("No se puede deshacer un pedido confirmado.");
+    }
+
     public confirmar(pedido: Pedido): void {
          void pedido;
         throw new Error("El pedido ya se encuentra confirmado.");
