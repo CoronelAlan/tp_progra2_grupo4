@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+title Corrección de un pedido antes de confirmar
+hide footbox
+autonumber
+
+actor Mozo
+participant "pedido: Pedido" as Pedido
+participant "estado: PedidoEnConstruccion" as Estado
+participant "combo: Combo" as Combo
+participant "platoPedido: PlatoPedido" as PlatoPedido
+
+Mozo -> Pedido : agregarPlato(combo)
+activate Pedido
+Pedido -> Estado : agregarPlato(pedido, combo)
+activate Estado
+Estado -> Pedido : agregarPlatoAlHistorialYCocina(combo)
+activate Pedido
+Pedido -> Pedido : guardarEstadoEnHistorial()
+Pedido -> Pedido : agregarPlatosNuevosACocina(combo)
+Pedido -> Combo : obtenerPlatos()
+Combo --> Pedido : platosIncluidos
+loop Por cada plato del combo
+    create PlatoPedido
+    Pedido -> PlatoPedido : new PlatoPedido(plato, estadoPendiente, nota)
+    Pedido -> Pedido : agregar a platosCocina y al grupo
+end
+Pedido -> Pedido : guardar combo en platosMenu
+Pedido --> Estado
+Deactivate Pedido
+Estado --> Pedido
+Deactivate Estado
+Pedido --> Mozo
+Deactivate Pedido
+
+Mozo -> Pedido : deshacerUltimaModificacion()
+activate Pedido
+Pedido -> Estado : validarDeshacer()
+Estado --> Pedido : permitido
+Pedido -> Pedido : recuperar historial (pop)
+Pedido -> Pedido : restaurar platosCocina, platosMenu y platosPorMenu
+Pedido --> Mozo
+Deactivate Pedido
+
+note over Pedido
+  Se restaura la composición anterior.
+  No se envía nada a cocina porque
+  el pedido sigue en construcción.
+end note
+@enduml

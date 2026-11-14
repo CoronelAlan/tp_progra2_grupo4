@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { DescuentoPorcentual } from "../src/iestrategiaBeneficio/descuentoporcentual";
+import { DescuentoPorcentual } from "../src/iestrategiabeneficio/descuentoporcentual";
 
 describe("Test de la clase DescuentoPorcentual (Strategy Pattern)", () => {
 

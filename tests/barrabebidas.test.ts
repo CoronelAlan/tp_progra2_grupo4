@@ -1,6 +1,6 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import { DeepMockProxy, mockDeep } from "jest-mock-extended";
-import { BarraBebidas } from "../src/tiposCocina/barraBebidas"; // Ajustá la ruta según corresponda
+import { BarraBebidas } from "../src/tiposCocina/barraBebidas"; 
 import { PlatoPedido } from "../src/platoPedido/platoPedido";
 import { Plato } from "../src/iplatomenu/plato";
 
